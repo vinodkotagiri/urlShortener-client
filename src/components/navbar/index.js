@@ -1,15 +1,27 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../App'
 const Navbar = () => {
-	const context = useContext(AuthContext)
 	const navigate = useNavigate()
-	const [auth, setAuth] = context
+	const [user, setUser] = useState(null)
+	const [visible, setVisible] = useState(false)
 	const handleLogout = () => {
 		localStorage.clear()
-		setAuth({ user: null, token: null })
-		navigate('/')
+		setVisible(false)
+		navigate('/login')
 	}
+	useEffect(() => {
+		if (localStorage.getItem('auth')) {
+			const auth = JSON.parse(localStorage.getItem('auth'))
+			setUser(auth.user)
+			setVisible(true)
+		}
+	}, [])
+	useEffect(() => {
+		if (!user) {
+			setVisible(false)
+		} else setVisible(true)
+	}, [user])
+
 	return (
 		<>
 			<div className='flex w-screen h-16 items-center bg-gray-800 justify-between px-8 x-50 w-max-[360px]'>
@@ -17,7 +29,7 @@ const Navbar = () => {
 					URL SHORTENER
 				</Link>
 				<div className='text-white flex gap-6'>
-					{!auth.user ? (
+					{!visible ? (
 						<>
 							<Link to='/login'>Login</Link>
 							<Link to='/register'>Register</Link>

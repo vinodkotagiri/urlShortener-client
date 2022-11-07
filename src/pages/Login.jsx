@@ -41,7 +41,7 @@ const Login = () => {
 		let msg = validateLogin(loginInfo, changed)
 		setErrorMsg(msg)
 		setbtnDisabled(msg === 'ok' ? false : true)
-	}, [loginInfo, errorMsg, handleSubmit])
+	}, [loginInfo, errorMsg, changed])
 
 	return (
 		<>
@@ -71,12 +71,19 @@ const Login = () => {
 					<Link to='/forgot-password' className='my-3 text-lg font-semibold text-lime-500 cursor-pointer'>
 						Forgot Password?
 					</Link>
-					<button
-						className='bg-lime-500 p-3 px-8 rounded-md text-white text-lg outline-none shadow-lg disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed'
-						disabled={btnDisabled}
-						onClick={handleSubmit}>
-						Login
-					</button>
+					<div className='w-full gap-2 flex'>
+						<button
+							className='bg-lime-500 p-3 w-1/2 px-8 rounded-md text-white text-lg outline-none shadow-lg disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed'
+							disabled={btnDisabled}
+							onClick={handleSubmit}>
+							Login
+						</button>
+						<button
+							className='bg-slate-500 p-3 w-1/2  px-8 rounded-md text-white text-lg outline-none shadow-lg '
+							onClick={() => navigate('/')}>
+							Cancel
+						</button>
+					</div>
 					<h4 className='text-lg mt-3 font-light'>
 						Don't have an account?{' '}
 						<Link to='/register' className='font-semibold text-lime-500'>

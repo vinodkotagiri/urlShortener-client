@@ -1,22 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { shortenUrlApi } from '../api/url'
 import Navbar from '../components/navbar'
 
-import { AuthContext } from '../App'
 const Home = () => {
-	const [auth] = useContext(AuthContext)
 	const [visible, setVisible] = useState(false)
-	const { user } = auth
 	const navigate = useNavigate()
 	const [originalUrl, setOriginalUrl] = useState('')
 	const [shortUrl, setShortUrl] = useState('')
+	const [user, setUser] = useState(null)
 	useEffect(() => {
 		if (localStorage.getItem('auth')) {
 			const auth = JSON.parse(localStorage.getItem('auth'))
+			setUser(auth.user)
+			setVisible(true)
 		}
-		if (!user) setVisible(false)
+	}, [])
+	useEffect(() => {
+		if (!user) {
+			setVisible(false)
+		} else {
+			setVisible(true)
+		}
 	}, [user])
 	const handleShowShortener = () => {
 		if (!user) {
@@ -74,6 +80,11 @@ const Home = () => {
 							onClick={handleShorten}>
 							Shorten!
 						</button>
+						<div
+							className='text-2xl text-white absolute top-3 right-4 cursor-pointer'
+							onClick={() => setVisible(false)}>
+							X
+						</div>
 					</div>
 				)}
 			</div>
